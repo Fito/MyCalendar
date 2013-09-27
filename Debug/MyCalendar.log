@@ -1,0 +1,29 @@
+﻿Build started 9/23/2013 9:54:26 PM.
+     1>Project "C:\Users\acer\Documents\Visual Studio 2012\Projects\MyCalendar\MyCalendar\MyCalendar.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\\" /AI"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib MyForm.cpp NewEventDialog.cpp WinCLI.cpp
+         MyForm.cpp
+     1>c:\users\acer\documents\visual studio 2012\projects\mycalendar\mycalendar\EventsList.h(18): warning C4677: 'GetEvents': signature of non-private member contains assembly private type 'cliext::list<_Value_t>'
+                 with
+                 [
+                     _Value_t=MyCalendar::Event ^
+                 ]
+         NewEventDialog.cpp
+         WinCLI.cpp
+     1>c:\users\acer\documents\visual studio 2012\projects\mycalendar\mycalendar\EventsList.h(18): warning C4677: 'GetEvents': signature of non-private member contains assembly private type 'cliext::list<_Value_t>'
+                 with
+                 [
+                     _Value_t=MyCalendar::Event ^
+                 ]
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\acer\Documents\Visual Studio 2012\Projects\MyCalendar\Debug\MyCalendar.exe" /INCREMENTAL /NOLOGO /ASSEMBLYRESOURCE:Debug\MyCalendar.MyForm.resources /ASSEMBLYRESOURCE:Debug\MyCalendar.NewEventDialog.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\acer\Documents\Visual Studio 2012\Projects\MyCalendar\Debug\MyCalendar.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\MyForm.obj
+         Debug\NewEventDialog.obj
+         Debug\WinCLI.obj
+         "Debug\.NETFramework,Version=v4.5.AssemblyAttributes.obj"
+         MyCalendar.vcxproj -> C:\Users\acer\Documents\Visual Studio 2012\Projects\MyCalendar\Debug\MyCalendar.exe
+     1>Done Building Project "C:\Users\acer\Documents\Visual Studio 2012\Projects\MyCalendar\MyCalendar\MyCalendar.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:10.71
