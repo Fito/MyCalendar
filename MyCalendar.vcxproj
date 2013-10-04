@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CloseButton.h" />
     <ClInclude Include="Elements.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventsList.h" />
@@ -103,6 +104,11 @@
     <EmbeddedResource Include="NewEventDialog.resx">
       <DependentUpon>NewEventDialog.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\closebutton.jpg" />
+    <Image Include="closebtn.png" />
+    <Image Include="closebutton.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

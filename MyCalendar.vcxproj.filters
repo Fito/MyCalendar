@@ -44,6 +44,9 @@
     <ClInclude Include="EventsList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CloseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
@@ -52,5 +55,16 @@
     <EmbeddedResource Include="NewEventDialog.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="closebutton.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\..\..\Desktop\closebutton.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="closebtn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

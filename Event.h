@@ -14,6 +14,7 @@ namespace MyCalendar {
 			this->title = title;
 			this->date = date;
 			this->description = description;
+			this->text = gcnew EventText(Point(0, 0), title);
 		}
 
 		bool IsOnDate(DateTime^ date) {
@@ -28,6 +29,10 @@ namespace MyCalendar {
 
 		String^ GetTitle() {
 			return this->title;
+		}
+
+		bool TextBorderContains(Point p) {
+			return this->text->border->Contains(p);
 		}
 	};
 }

@@ -24,7 +24,8 @@ namespace MyCalendar {
 					   font(gcnew System::Drawing::Font(family, 10, FontStyle::Regular, GraphicsUnit::Point)),
 					   brush(gcnew SolidBrush(Color::Black)),
 					   eventsList(gcnew EventsList()),
-					   eventText(nullptr)
+					   eventText(nullptr),
+					   hoveredElement(nullptr)
 		{
 			InitializeComponent();
 			//
@@ -48,15 +49,13 @@ namespace MyCalendar {
 	private: System::Windows::Forms::Button^  eventManagerCreateEvent;
 	private: NewEventDialog^ newEventDialog;
 	private: System::Windows::Forms::Label^  label1;
-
 	private: FontFamily^ family;
 	private: System::Drawing::Font^ font;
 	private: SolidBrush^ brush;
 	private: EventsList^ eventsList;
 	private: EventText^ eventText;
 	private: System::Windows::Forms::MonthCalendar^  monthCalendar1;
-	protected: 
-
+	private: Element^ hoveredElement;
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -134,14 +133,16 @@ namespace MyCalendar {
 			this->Text = L" My Calendar";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::MyForm_Paint);
+			this->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseClick);
+			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseMove);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-
 		 }
+
 private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, System::EventArgs^  e) {
 			if(newEventDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 				eventsList += gcnew Event(
@@ -155,8 +156,9 @@ private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, Syst
 
 private: System::Void MyForm_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
 			Graphics^ g = e->Graphics;
-			eventsList->DrawEventsForDate(currentDate, font, Point(280, 40), g);
+			eventsList->DrawEventsForDate(currentDate, Point(280, 45), g);
 		 }
+
 private: System::Void monthCalendar1_DateChanged(System::Object^  sender, System::Windows::Forms::DateRangeEventArgs^  e) {
 			currentDate = e->End;
 			if (!TodaySelected(currentDate)){
@@ -166,14 +168,40 @@ private: System::Void monthCalendar1_DateChanged(System::Object^  sender, System
 			}
 			Invalidate();
 		 }
+
 private: bool TodaySelected(DateTime^ date) {
 			DateTime today = DateTime::Today;
 			return (date->Day == today.Day &&
 					date->Month == today.Month &&
 					date->Year == today.Year);
 		 }
+
 private: String^ StringifyDate(DateTime^ date) {
 			return date->Month.ToString() + L"/" + date->Day.ToString();
+		 }
+
+private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+			Element^ newHovered = eventsList->ElementHovered(e->Location);
+			if (hoveredElement == newHovered) { 
+				return; 
+			} else if (newHovered) {
+				if (hoveredElement) { hoveredElement->hovered = false; }
+				hoveredElement = newHovered;				
+				hoveredElement->hovered = true;
+				Invalidate();
+			}
+			if (hoveredElement && !newHovered) {
+				hoveredElement->hovered = false;
+				hoveredElement = nullptr;
+				Invalidate();
+			}
+		 }
+
+private: System::Void MyForm_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+			 if (!(eventsList->GetEvents()->empty())) {
+				 eventsList->CloseEvent(e->Location, currentDate);
+				 Invalidate();
+			 }
 		 }
 };
 }

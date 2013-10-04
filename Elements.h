@@ -15,12 +15,13 @@ namespace MyCalendar {
 		Pen^ pen;
 		virtual void Draw(Graphics^ g) abstract;
 		Point^ GetPosition() { return position; }
-		property bool hovered;
+		void SetPosition( Point newPosition ) { this->position = newPosition; }
+		bool hovered;
 		property System::Drawing::Rectangle bound {
 			System::Drawing::Rectangle get() { return boundRect; }
 		}
 
-		Element() : hoveredColor(Color::LimeGreen) {
+		Element() : hoveredColor(Color::LightBlue) {
 			hovered = false;
 		}
 
@@ -76,6 +77,7 @@ namespace MyCalendar {
 			width = arg_width;
 			height = arg_height;
 			boundRect = System::Drawing::Rectangle(position, Size(width, height));
+			boundRect.Inflate(2,2);
 		}
 	
 		virtual void Draw(Graphics^ g) override {

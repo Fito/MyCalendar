@@ -29,15 +29,32 @@ namespace MyCalendar {
 			return this;
 		}
 
-		void DrawEventsForDate(DateTime^ date, Font^ font, Point^ start, Graphics^ g) {
+		void DrawEventsForDate(DateTime^ date, Point^ start, Graphics^ g) {
 			int i = start->Y;
 			for each(Event^ event in this->GetEvents()) {
 				if (event->IsOnDate(date)) {
-					event->text = gcnew EventText(Color::Indigo, Point(start->X, i), event->GetTitle(), font);
+					event->text->SetPosition(Point(start->X, i));
 					event->text->Draw(g);
-					i += 30;
+					i += 40;
 				}
 			}
+		}
+
+		Element^ ElementHovered(Point p) {
+			for each(Event^ event in this->GetEvents()) {
+				if (event->TextBorderContains(p))
+					return event->text->border;
+			}
+			return nullptr;
+		}
+
+		void CloseEvent(Point p, DateTime^ date) {
+			for each(Event^ event in this->GetEvents()) {
+				if (event->IsOnDate(date) && event->text->CloseClicked(p)) {
+					events->remove(event);
+					return;
+				}
+			}			
 		}
 	};
 }
