@@ -13,15 +13,19 @@ namespace MyCalendar {
 
 	public:
 		Pen^ pen;
+		bool hovered;
 		virtual void Draw(Graphics^ g) abstract;
 		Point^ GetPosition() { return position; }
-		void SetPosition( Point newPosition ) { this->position = newPosition; }
-		bool hovered;
+		
+		void SetPosition( Point newPosition ) { 
+			this->position = newPosition;
+		}
+
 		property System::Drawing::Rectangle bound {
 			System::Drawing::Rectangle get() { return boundRect; }
 		}
 
-		Element() : hoveredColor(Color::LightBlue) {
+		Element() : hoveredColor(Color::DarkSeaGreen) {
 			hovered = false;
 		}
 
@@ -79,7 +83,12 @@ namespace MyCalendar {
 			boundRect = System::Drawing::Rectangle(position, Size(width, height));
 			boundRect.Inflate(2,2);
 		}
-	
+
+		void SetPosition(Point p) {
+			Element::SetPosition(p);
+			boundRect.Location = p;
+		}
+
 		virtual void Draw(Graphics^ g) override {
 			pen->Color = hovered ? hoveredColor : color;
 			g->DrawRectangle(pen, position.X, position.Y, width, height);
