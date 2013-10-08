@@ -11,6 +11,8 @@ namespace MyCalendar {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
+	using namespace System::Runtime::Serialization::Json;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -28,6 +30,13 @@ namespace MyCalendar {
 					   hoveredElement(nullptr)
 		{
 			InitializeComponent();
+			FileStream^ fs = gcnew FileStream("my_file.json", FileMode::OpenOrCreate);
+			if (fs->Length) {
+				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
+				array<Event^>^ eventArray = (array<Event^>^)ser->ReadObject(fs);
+				eventsList->PopulateFromArray(eventArray);
+			}
+			fs->Close();
 			//
 			//TODO: Add the constructor code here
 			//
@@ -146,10 +155,14 @@ private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e
 private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, System::EventArgs^  e) {
 			if(newEventDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 				eventsList += gcnew Event(
-				newEventDialog->TitleText, 
-				newEventDialog->Date, 
-				newEventDialog->DescriptionText
+					newEventDialog->TitleText, 
+					newEventDialog->Date, 
+					newEventDialog->DescriptionText
 				);
+				FileStream^ fs = gcnew FileStream("my_file.json", FileMode::OpenOrCreate);
+				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
+				ser->WriteObject(fs, eventsList->ToArray());
+				fs->Close();
 				Invalidate();
 			}
 		 }

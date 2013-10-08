@@ -4,15 +4,27 @@
 
 using namespace System;
 using namespace cliext;
+using namespace System::Runtime::Serialization;
+using namespace System::Runtime::Serialization::Json;
 
-namespace MyCalendar {
+namespace MyCalendar {	
 	public ref class EventsList {
 	private:
 		list<Event^>^ events;
-
+		array <Event^>^ eventArray;
 	public:
-		EventsList() {
+		EventsList() : eventArray(nullptr) {
 			events = gcnew list<Event^>();
+		}
+
+		array<Event^>^ ToArray() {
+			eventArray = events->to_array();
+			return eventArray;
+		}
+
+		list<Event^>^ PopulateFromArray(array<Event^>^ eventsArray) {
+			events = gcnew list<Event^>(eventsArray);
+			return events;
 		}
 
 		list<Event^>^ GetEvents(){
