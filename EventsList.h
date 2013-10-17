@@ -1,5 +1,6 @@
 #pragma once
 #include "Event.h"
+#include "Elements.h"
 #include <cliext/list>
 
 using namespace System;
@@ -43,11 +44,13 @@ namespace MyCalendar {
 
 		void DrawEventsForDate(DateTime^ date, Point^ start, Graphics^ g) {
 			int i = start->Y;
+			int nextHeight = 40;
 			for each(Event^ event in this->GetEvents()) {
 				if (event->IsOnDate(date)) {
 					event->text->SetPosition(Point(start->X, i));
 					event->text->Draw(g);
-					i += 40;
+					nextHeight = (event->text->isExpanded()) ? 55 : 40;
+					i += nextHeight;
 				}
 			}
 		}
@@ -67,6 +70,17 @@ namespace MyCalendar {
 					return;
 				}
 			}			
+		}
+
+		void EventClicked(Point p) {
+			for each(Event^ event in this->GetEvents()) {
+				if (event->text->FrameClicked(p)) {
+					event->text->toggleFrame();
+				} else {
+					event->text->resetFrame();
+				}
+			}
+			return;
 		}
 	};
 }

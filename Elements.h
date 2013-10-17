@@ -15,7 +15,7 @@ namespace MyCalendar {
 		Pen^ pen;
 		bool hovered;
 		virtual void Draw(Graphics^ g) abstract;
-		Point^ GetPosition() { return position; }
+		Point GetPosition() { return position; }
 		
 		void SetPosition( Point newPosition ) { 
 			this->position = newPosition;
@@ -25,7 +25,7 @@ namespace MyCalendar {
 			System::Drawing::Rectangle get() { return boundRect; }
 		}
 
-		Element() : hoveredColor(Color::DarkSeaGreen) {
+		Element() : hoveredColor(Color::Blue) {
 			hovered = false;
 		}
 
@@ -65,7 +65,7 @@ namespace MyCalendar {
 		int height;
 
 		Rectangle(Color color, Point p1, Point p2) {
-			pen = gcnew Pen(color);
+			pen = gcnew Pen(color, 1.8);
 			this->color = color;
 			position = Point(Math::Min(p1.X, p2.X), Math::Min(p1.Y,p2.Y));
 			width = Math::Abs(p1.X - p2.X);
@@ -76,7 +76,7 @@ namespace MyCalendar {
 		Rectangle(Color color, Point point, int arg_width, int arg_height) {
 			Point p2 = Point(point.X + arg_width, point.Y + arg_height);
 			position = Point(Math::Min(point.X, p2.X), Math::Min(point.Y,p2.Y));
-			pen = gcnew Pen(color);
+			pen = gcnew Pen(color, 1.8);
 			this->color = color;
 			width = arg_width;
 			height = arg_height;

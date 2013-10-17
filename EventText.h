@@ -14,20 +14,21 @@ namespace MyCalendar {
 		FontFamily^ fontFamily;
 		int textHeight;
 		int textWidth;
+		bool expanded;
 
 	public:
 		Rectangle^ border;
-		EventText(Point p, String^ text) {
+		EventText(Point p, String^ text) : expanded(false) {
 			this->fontFamily = gcnew FontFamily(L"Arial");
 			this->font = gcnew System::Drawing::Font(fontFamily, 10, FontStyle::Regular, GraphicsUnit::Point);
-			this->color = Color::Indigo;
+			this->color = Color::Black;
 			brush = gcnew SolidBrush(color);
 			position = p;
 			this->text = text;
 			this->font = font;
 			textHeight = font->Height;
 			textWidth = static_cast<int>(font-> Size * text-> Length);
-			border = gcnew Rectangle(Color::Navy, position, 255, textHeight + 15);
+			border = gcnew Rectangle(Color::Gray, position, 255, textHeight + 15);
 			boundRect = System::Drawing::Rectangle(position, Size(textWidth, textHeight));
 			boundRect.Inflate(2,2);
 		}
@@ -36,6 +37,24 @@ namespace MyCalendar {
 			Element::SetPosition(p);
 			border->SetPosition(p);
 			boundRect.Location = p;
+		}
+
+		void toggleFrame() {
+			expanded ? resetFrame() : expandFrame();
+		}
+
+		void expandFrame() {
+			border->height = font->Height + 30;
+			expanded = true;
+		}
+
+		void resetFrame() {
+			border->height = font->Height + 15;
+			expanded = false;
+		}
+
+		bool isExpanded() {
+			return expanded;
 		}
 
 		virtual void Draw(Graphics^ g) override {
@@ -49,6 +68,10 @@ namespace MyCalendar {
 
 		bool CloseClicked(Point clickedSpot) {
 			return closeButton->Contains(clickedSpot);
+		}
+
+		bool FrameClicked(Point clickedSpot) {
+			return (border->Contains(clickedSpot) && !CloseClicked(clickedSpot));
 		}
 	};
 }

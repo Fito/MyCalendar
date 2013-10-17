@@ -85,11 +85,11 @@ namespace MyCalendar {
 			// 
 			// eventManagerCreateEvent
 			// 
-			this->eventManagerCreateEvent->BackColor = System::Drawing::Color::Lavender;
+			this->eventManagerCreateEvent->BackColor = System::Drawing::Color::Gainsboro;
 			this->eventManagerCreateEvent->FlatAppearance->BorderColor = System::Drawing::Color::White;
-			this->eventManagerCreateEvent->Font = (gcnew System::Drawing::Font(L"Segoe Print", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->eventManagerCreateEvent->Font = (gcnew System::Drawing::Font(L"Tahoma", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->eventManagerCreateEvent->ForeColor = System::Drawing::Color::DarkOrchid;
+			this->eventManagerCreateEvent->ForeColor = System::Drawing::Color::Black;
 			this->eventManagerCreateEvent->Location = System::Drawing::Point(62, 198);
 			this->eventManagerCreateEvent->Name = L"eventManagerCreateEvent";
 			this->eventManagerCreateEvent->Size = System::Drawing::Size(139, 38);
@@ -101,12 +101,12 @@ namespace MyCalendar {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe Print", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->label1->Font = (gcnew System::Drawing::Font(L"Tahoma", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::Color::Indigo;
+			this->label1->ForeColor = System::Drawing::Color::Black;
 			this->label1->Location = System::Drawing::Point(334, 9);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(160, 33);
+			this->label1->Size = System::Drawing::Size(159, 23);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"Today\'s events:";
 			// 
@@ -128,9 +128,8 @@ namespace MyCalendar {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(220)), static_cast<System::Int32>(static_cast<System::Byte>(220)), 
-				static_cast<System::Int32>(static_cast<System::Byte>(255)));
-			this->ClientSize = System::Drawing::Size(557, 268);
+			this->BackColor = System::Drawing::Color::Gainsboro;
+			this->ClientSize = System::Drawing::Size(557, 300);
 			this->Controls->Add(this->monthCalendar1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->eventManagerCreateEvent);
@@ -201,17 +200,19 @@ private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows:
 				if (hoveredElement) { hoveredElement->hovered = false; }
 				hoveredElement = newHovered;				
 				hoveredElement->hovered = true;
-				Invalidate();
+				Invalidate(hoveredElement->bound);
 			}
 			if (hoveredElement && !newHovered) {
 				hoveredElement->hovered = false;
-				hoveredElement = nullptr;
-				Invalidate();
+				Invalidate(hoveredElement->bound);
+				hoveredElement = nullptr;	
 			}
+			Update();
 		 }
 
 private: System::Void MyForm_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			 if (!(eventsList->GetEvents()->empty())) {
+				 eventsList->EventClicked(e->Location);
 				 eventsList->CloseEvent(e->Location, currentDate);
 				 Invalidate();
 			 }

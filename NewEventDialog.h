@@ -71,49 +71,52 @@ namespace MyCalendar {
 			// 
 			// dateTimePicker1
 			// 
+			this->dateTimePicker1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 12));
 			this->dateTimePicker1->Location = System::Drawing::Point(12, 120);
 			this->dateTimePicker1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->dateTimePicker1->Name = L"dateTimePicker1";
-			this->dateTimePicker1->Size = System::Drawing::Size(342, 29);
+			this->dateTimePicker1->Size = System::Drawing::Size(342, 26);
 			this->dateTimePicker1->TabIndex = 1;
 			this->dateTimePicker1->ValueChanged += gcnew System::EventHandler(this, &NewEventDialog::dateTimePicker1_ValueChanged);
 			// 
 			// textBox1
 			// 
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 12));
 			this->textBox1->Location = System::Drawing::Point(12, 41);
 			this->textBox1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(342, 29);
+			this->textBox1->Size = System::Drawing::Size(342, 26);
 			this->textBox1->TabIndex = 0;
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe Print", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
+			this->label1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
+			this->label1->ForeColor = System::Drawing::Color::Black;
 			this->label1->Location = System::Drawing::Point(154, 88);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(49, 28);
+			this->label1->Size = System::Drawing::Size(51, 24);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"Date";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe Print", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
+			this->label2->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
+			this->label2->ForeColor = System::Drawing::Color::Black;
 			this->label2->Location = System::Drawing::Point(154, 9);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(48, 28);
+			this->label2->Size = System::Drawing::Size(53, 24);
 			this->label2->TabIndex = 3;
 			this->label2->Text = L"Title";
 			// 
 			// createEventCreate
 			// 
-			this->createEventCreate->BackColor = System::Drawing::Color::PaleGreen;
+			this->createEventCreate->BackColor = System::Drawing::Color::Green;
 			this->createEventCreate->DialogResult = System::Windows::Forms::DialogResult::OK;
-			this->createEventCreate->Font = (gcnew System::Drawing::Font(L"Segoe Print", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->createEventCreate->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
+			this->createEventCreate->ForeColor = System::Drawing::Color::White;
 			this->createEventCreate->Location = System::Drawing::Point(12, 329);
 			this->createEventCreate->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->createEventCreate->Name = L"createEventCreate";
@@ -125,11 +128,11 @@ namespace MyCalendar {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Segoe Print", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
+			this->label3->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
+			this->label3->ForeColor = System::Drawing::Color::Black;
 			this->label3->Location = System::Drawing::Point(127, 170);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(103, 28);
+			this->label3->Size = System::Drawing::Size(112, 24);
 			this->label3->TabIndex = 5;
 			this->label3->Text = L"Description";
 			// 
@@ -137,7 +140,8 @@ namespace MyCalendar {
 			// 
 			this->textBox2->AcceptsReturn = true;
 			this->textBox2->BackColor = System::Drawing::SystemColors::Window;
-			this->textBox2->ForeColor = System::Drawing::SystemColors::WindowFrame;
+			this->textBox2->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 12));
+			this->textBox2->ForeColor = System::Drawing::Color::Black;
 			this->textBox2->Location = System::Drawing::Point(12, 202);
 			this->textBox2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->textBox2->Multiline = true;
@@ -147,10 +151,11 @@ namespace MyCalendar {
 			// 
 			// createEventCancel
 			// 
-			this->createEventCancel->BackColor = System::Drawing::Color::LightSalmon;
+			this->createEventCancel->BackColor = System::Drawing::Color::Red;
 			this->createEventCancel->DialogResult = System::Windows::Forms::DialogResult::Cancel;
-			this->createEventCancel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->createEventCancel->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
+			this->createEventCancel->ForeColor = System::Drawing::Color::White;
 			this->createEventCancel->Location = System::Drawing::Point(249, 329);
 			this->createEventCancel->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 			this->createEventCancel->Name = L"createEventCancel";
