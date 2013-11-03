@@ -49,7 +49,7 @@ namespace MyCalendar {
 				if (event->IsOnDate(date)) {
 					event->text->SetPosition(Point(start->X, i));
 					event->text->Draw(g);
-					nextHeight = (event->text->isExpanded()) ? 55 : 40;
+					nextHeight = (event->text->isExpanded()) ? 85 : 40;
 					i += nextHeight;
 				}
 			}

@@ -8,7 +8,8 @@ namespace MyCalendar {
 	public ref class EventText : Element {
 	protected:
 		CloseButton^ closeButton;
-		String^ text;
+		String^ title;
+		String^ description;
 		SolidBrush^ brush;
 		Font^ font;
 		FontFamily^ fontFamily;
@@ -18,16 +19,17 @@ namespace MyCalendar {
 
 	public:
 		Rectangle^ border;
-		EventText(Point p, String^ text) : expanded(false) {
+		EventText(Point p, String^ title, String^ description) : expanded(false) {
 			this->fontFamily = gcnew FontFamily(L"Arial");
 			this->font = gcnew System::Drawing::Font(fontFamily, 10, FontStyle::Regular, GraphicsUnit::Point);
 			this->color = Color::Black;
 			brush = gcnew SolidBrush(color);
 			position = p;
-			this->text = text;
+			this->title = title;
+			this->description = description;
 			this->font = font;
 			textHeight = font->Height;
-			textWidth = static_cast<int>(font-> Size * text-> Length);
+			textWidth = static_cast<int>(font-> Size * title-> Length);
 			border = gcnew Rectangle(Color::Gray, position, 255, textHeight + 15);
 			boundRect = System::Drawing::Rectangle(position, Size(textWidth, textHeight));
 			boundRect.Inflate(2,2);
@@ -44,7 +46,7 @@ namespace MyCalendar {
 		}
 
 		void expandFrame() {
-			border->height = font->Height + 30;
+			border->height = font->Height + 60;
 			expanded = true;
 		}
 
@@ -57,9 +59,18 @@ namespace MyCalendar {
 			return expanded;
 		}
 
+		void drawDescription(Graphics^ g) {
+			g->DrawString(description, font, brush, Point(15, (textHeight + 20)));
+		}
+
+		void drawTitle(Graphics^ g) {
+			g->DrawString(title, font, brush, Point(15, (textHeight/2)));
+		}
+
 		virtual void Draw(Graphics^ g) override {
 			g->TranslateTransform(safe_cast<float>(position.X), safe_cast<float>(position.Y));
-			g->DrawString(text, font, brush, Point(15, (textHeight/2)));
+			drawTitle(g);
+			if (expanded) { drawDescription(g); }
 			g->ResetTransform();
 			closeButton = gcnew CloseButton(Point(position.X + 230, position.Y + 8));
 			border->Draw(g);
