@@ -75,6 +75,8 @@
   <ItemGroup>
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="NewEventDialog.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="UserInfoDialog.cpp" />
     <ClCompile Include="WinCLI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +100,10 @@
     <ClInclude Include="NewEventDialog.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="User.h" />
+    <ClInclude Include="UserInfoDialog.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NewEventDialog.resx">
       <DependentUpon>NewEventDialog.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInfoDialog.resx">
+      <DependentUpon>UserInfoDialog.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

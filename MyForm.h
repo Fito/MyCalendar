@@ -1,7 +1,9 @@
 #pragma once
 #include "NewEventDialog.h"
+#include "UserInfoDialog.h"
 #include "EventText.h"
 #include "EventsList.h"
+#include "User.h"
 
 namespace MyCalendar {
 
@@ -20,8 +22,9 @@ namespace MyCalendar {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	public:
-		MyForm(void) : currentDate(DateTime::Today), 
+		MyForm(void) : currentDate(DateTime::Today),
 					   newEventDialog(gcnew NewEventDialog()),
+					   userInfoDialog(gcnew UserInfoDialog()),
 					   family(gcnew FontFamily(L"Arial")),
 					   font(gcnew System::Drawing::Font(family, 10, FontStyle::Regular, GraphicsUnit::Point)),
 					   brush(gcnew SolidBrush(Color::Black)),
@@ -30,13 +33,21 @@ namespace MyCalendar {
 					   hoveredElement(nullptr)
 		{
 			InitializeComponent();
-			FileStream^ fs = gcnew FileStream("my_file.json", FileMode::OpenOrCreate);
-			if (fs->Length) {
+	
+			FileStream^ userInfoStream = gcnew FileStream("user_info.json", FileMode::OpenOrCreate);
+			if (userInfoStream->Length) {
+				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(User::typeid);
+				user = (User^)ser->ReadObject(userInfoStream);
+			}
+			userInfoStream->Close();
+			
+			FileStream^ eventsStream = gcnew FileStream("events.json", FileMode::OpenOrCreate);
+			if (eventsStream->Length) {
 				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
-				array<Event^>^ eventArray = (array<Event^>^)ser->ReadObject(fs);
+				array<Event^>^ eventArray = (array<Event^>^)ser->ReadObject(eventsStream);
 				eventsList->PopulateFromArray(eventArray);
 			}
-			fs->Close();
+			eventsStream->Close();
 			//
 			//TODO: Add the constructor code here
 			//
@@ -57,6 +68,7 @@ namespace MyCalendar {
 	private: DateTime^ currentDate;
 	private: System::Windows::Forms::Button^  eventManagerCreateEvent;
 	private: NewEventDialog^ newEventDialog;
+	private: UserInfoDialog^ userInfoDialog;
 	private: System::Windows::Forms::Label^  label1;
 	private: FontFamily^ family;
 	private: System::Drawing::Font^ font;
@@ -65,6 +77,7 @@ namespace MyCalendar {
 	private: EventText^ eventText;
 	private: System::Windows::Forms::MonthCalendar^  monthCalendar1;
 	private: Element^ hoveredElement;
+	private: User^ user;
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -149,6 +162,16 @@ namespace MyCalendar {
 		}
 #pragma endregion
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+			 if(!user){
+				if(userInfoDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+					user = gcnew User(userInfoDialog->userName, userInfoDialog->userPassword);
+				}
+				FileStream^ fs = gcnew FileStream("user_info.json", FileMode::OpenOrCreate);
+				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(User::typeid);
+				ser->WriteObject(fs, user);
+				fs->Close();
+				Invalidate();
+			 }
 		 }
 
 private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, System::EventArgs^  e) {
@@ -158,7 +181,7 @@ private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, Syst
 					newEventDialog->Date, 
 					newEventDialog->DescriptionText
 				);
-				FileStream^ fs = gcnew FileStream("my_file.json", FileMode::OpenOrCreate);
+				FileStream^ fs = gcnew FileStream("events.json", FileMode::OpenOrCreate);
 				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
 				ser->WriteObject(fs, eventsList->ToArray());
 				fs->Close();

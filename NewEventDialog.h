@@ -93,7 +93,7 @@ namespace MyCalendar {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
 			this->label1->ForeColor = System::Drawing::Color::Black;
-			this->label1->Location = System::Drawing::Point(154, 88);
+			this->label1->Location = System::Drawing::Point(12, 92);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(51, 24);
 			this->label1->TabIndex = 2;
@@ -104,7 +104,7 @@ namespace MyCalendar {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
 			this->label2->ForeColor = System::Drawing::Color::Black;
-			this->label2->Location = System::Drawing::Point(154, 9);
+			this->label2->Location = System::Drawing::Point(12, 13);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(53, 24);
 			this->label2->TabIndex = 3;
@@ -130,7 +130,7 @@ namespace MyCalendar {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Trebuchet MS", 14, System::Drawing::FontStyle::Bold));
 			this->label3->ForeColor = System::Drawing::Color::Black;
-			this->label3->Location = System::Drawing::Point(127, 170);
+			this->label3->Location = System::Drawing::Point(8, 174);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(112, 24);
 			this->label3->TabIndex = 5;
