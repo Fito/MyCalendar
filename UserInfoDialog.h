@@ -158,12 +158,12 @@ namespace MyCalendar {
 #pragma endregion
 	public: property String^ userName {
 				String^ get() {
-					return this->textBox1->Text;
+					return this->textBox2->Text;
 				}
 			}
 	public: property String^ userPassword {
 				String^ get() {
-					return this->textBox2->Text;
+					return this->textBox1->Text;
 				}
 			}
 	private: System::Void label3_Click(System::Object^  sender, System::EventArgs^  e) {

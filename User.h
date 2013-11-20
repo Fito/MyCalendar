@@ -15,6 +15,10 @@ namespace MyCalendar {
 		User(String^ name, String^ password){
 			this->name = name;
 			this->password = password;
-		}
+		};
+
+		String^ GetName(void) {
+			return name;
+		};
 	};
 }

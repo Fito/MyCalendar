@@ -4,6 +4,8 @@
 #include "EventText.h"
 #include "EventsList.h"
 #include "User.h"
+#include "UserLoader.h"
+#include "Requester.h"
 
 namespace MyCalendar {
 
@@ -34,12 +36,8 @@ namespace MyCalendar {
 		{
 			InitializeComponent();
 	
-			FileStream^ userInfoStream = gcnew FileStream("user_info.json", FileMode::OpenOrCreate);
-			if (userInfoStream->Length) {
-				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(User::typeid);
-				user = (User^)ser->ReadObject(userInfoStream);
-			}
-			userInfoStream->Close();
+			userLoader = gcnew UserLoader("user_info.json");
+			user = userLoader->LoadUser();
 			
 			FileStream^ eventsStream = gcnew FileStream("events.json", FileMode::OpenOrCreate);
 			if (eventsStream->Length) {
@@ -78,6 +76,7 @@ namespace MyCalendar {
 	private: System::Windows::Forms::MonthCalendar^  monthCalendar1;
 	private: Element^ hoveredElement;
 	private: User^ user;
+	private: UserLoader^ userLoader;
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -161,17 +160,26 @@ namespace MyCalendar {
 
 		}
 #pragma endregion
+
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 			 if(!user){
-				if(userInfoDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+				 System::Diagnostics::Debug::WriteLine("No user");
+				 if(userInfoDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 					user = gcnew User(userInfoDialog->userName, userInfoDialog->userPassword);
 				}
-				FileStream^ fs = gcnew FileStream("user_info.json", FileMode::OpenOrCreate);
-				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(User::typeid);
-				ser->WriteObject(fs, user);
-				fs->Close();
+				
+				// After user is created, send request to the server, to retrieve events.
+				Requester^ requester = gcnew Requester();
+				System::Diagnostics::Debug::WriteLine("Starting web request");
+				// requester->Get('API URL');
+				System::Diagnostics::Debug::WriteLine(requester->getResponse());
+				// The events list would be created here, from the json data the server returns.
+
+				userLoader->SaveUserData(user);
+				
 				Invalidate();
 			 }
+			 this->Text = (user->GetName() + "'s Calendar");
 		 }
 
 private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, System::EventArgs^  e) {
