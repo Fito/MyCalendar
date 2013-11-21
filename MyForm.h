@@ -5,6 +5,7 @@
 #include "EventsList.h"
 #include "User.h"
 #include "UserLoader.h"
+#include "EventsLoader.h"
 #include "Requester.h"
 
 namespace MyCalendar {
@@ -39,13 +40,8 @@ namespace MyCalendar {
 			userLoader = gcnew UserLoader("user_info.json");
 			user = userLoader->LoadUser();
 			
-			FileStream^ eventsStream = gcnew FileStream("events.json", FileMode::OpenOrCreate);
-			if (eventsStream->Length) {
-				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
-				array<Event^>^ eventArray = (array<Event^>^)ser->ReadObject(eventsStream);
-				eventsList->PopulateFromArray(eventArray);
-			}
-			eventsStream->Close();
+			eventsLoader = gcnew EventsLoader("events.json");
+			eventsList->PopulateFromArray(eventsLoader->LoadEvents());
 			//
 			//TODO: Add the constructor code here
 			//
@@ -77,6 +73,8 @@ namespace MyCalendar {
 	private: Element^ hoveredElement;
 	private: User^ user;
 	private: UserLoader^ userLoader;
+	private: EventsLoader^ eventsLoader;
+
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -189,10 +187,9 @@ private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, Syst
 					newEventDialog->Date, 
 					newEventDialog->DescriptionText
 				);
-				FileStream^ fs = gcnew FileStream("events.json", FileMode::OpenOrCreate);
-				DataContractJsonSerializer^ ser = gcnew DataContractJsonSerializer(array<Event^>::typeid);
-				ser->WriteObject(fs, eventsList->ToArray());
-				fs->Close();
+				
+				eventsLoader->SaveEventsData(eventsList->ToArray());
+				
 				Invalidate();
 			}
 		 }

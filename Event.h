@@ -1,4 +1,7 @@
 #pragma once
+
+#include "EventText.h"
+
 using namespace System;
 using namespace System::Runtime::Serialization;
 using namespace System::Runtime::Serialization::Json;

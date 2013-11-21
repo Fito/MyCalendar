@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DataLoader.h"
 #include "User.h"
 
 using namespace System;
@@ -8,22 +9,10 @@ using namespace System::Runtime::Serialization::Json;
 using namespace System::IO;
 
 namespace MyCalendar{
-	ref class UserLoader {
-	protected:
-		String^ fileName;
-		FileStream^ stream;
-		DataContractJsonSerializer^ serializer;
+	ref class UserLoader : DataLoader {
 	public:
-		UserLoader(String^ file_name) : fileName(file_name),
-										serializer( gcnew DataContractJsonSerializer(User::typeid)){};
-
-		bool OpenFile(void) {
-			stream = gcnew FileStream(fileName, FileMode::OpenOrCreate);
-			return stream->Length;
-		};
-
-		void CloseFile(void) {
-			stream->Close();
+		UserLoader(String^ file_name) : DataLoader(file_name) {
+			serializer = gcnew DataContractJsonSerializer(User::typeid);
 		};
 
 		User^ LoadUser(void) {
