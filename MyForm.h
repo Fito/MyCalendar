@@ -4,15 +4,15 @@
 #include "EventText.h"
 #include "EventsList.h"
 #include "User.h"
+#include "Json.h"
 #include "UserLoader.h"
 #include "EventsLoader.h"
 #include "Requester.h"
+#include "EventsCreator.h"
 
 namespace MyCalendar {
-
 	using namespace System;
 	using namespace System::ComponentModel;
-	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
@@ -41,7 +41,9 @@ namespace MyCalendar {
 			user = userLoader->LoadUser();
 			
 			eventsLoader = gcnew EventsLoader("events.json");
-			eventsList->PopulateFromArray(eventsLoader->LoadEvents());
+			array<Event^>^ loadedEvents = eventsLoader->LoadEvents(); 
+			if (loadedEvents){ eventsList->PopulateFromArray(eventsLoader->LoadEvents()); }
+			sendDataToServer = false;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -74,6 +76,8 @@ namespace MyCalendar {
 	private: User^ user;
 	private: UserLoader^ userLoader;
 	private: EventsLoader^ eventsLoader;
+	private: System::Windows::Forms::Label^  label2;
+	private: bool sendDataToServer;
 
 	private:
 		/// <summary>
@@ -91,6 +95,7 @@ namespace MyCalendar {
 			this->eventManagerCreateEvent = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->monthCalendar1 = (gcnew System::Windows::Forms::MonthCalendar());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// eventManagerCreateEvent
@@ -134,12 +139,24 @@ namespace MyCalendar {
 			this->monthCalendar1->TrailingForeColor = System::Drawing::Color::Black;
 			this->monthCalendar1->DateChanged += gcnew System::Windows::Forms::DateRangeEventHandler(this, &MyForm::monthCalendar1_DateChanged);
 			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Tahoma", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->label2->ForeColor = System::Drawing::Color::Black;
+			this->label2->Location = System::Drawing::Point(14, 256);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(0, 23);
+			this->label2->TabIndex = 4;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::Gainsboro;
 			this->ClientSize = System::Drawing::Size(557, 300);
+			this->Controls->Add(this->label2);
 			this->Controls->Add(this->monthCalendar1);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->eventManagerCreateEvent);
@@ -149,6 +166,7 @@ namespace MyCalendar {
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"MyForm";
 			this->Text = L" My Calendar";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm::MyForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::MyForm_Paint);
 			this->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseClick);
@@ -160,24 +178,26 @@ namespace MyCalendar {
 #pragma endregion
 
 private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-			 if(!user){
-				 System::Diagnostics::Debug::WriteLine("No user");
-				 if(userInfoDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-					user = gcnew User(userInfoDialog->userName, userInfoDialog->userPassword);
+			if(!user){
+				int dialogResult = 1;
+				// Show user credentials dialog until the user logs in successfully or creates a new user.
+				while( dialogResult ) {
+					dialogResult = userInfoDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK ? 0 : 1;
 				}
-				
-				// After user is created, send request to the server, to retrieve events.
-				Requester^ requester = gcnew Requester();
-				System::Diagnostics::Debug::WriteLine("Starting web request");
-				// requester->Get('API URL');
-				System::Diagnostics::Debug::WriteLine(requester->getResponse());
-				// The events list would be created here, from the json data the server returns.
-
+				user = userInfoDialog->getUser();
 				userLoader->SaveUserData(user);
-				
-				Invalidate();
-			 }
-			 this->Text = (user->GetName() + "'s Calendar");
+			}
+
+			// Get events form the server if there are no events stored locally.
+			if(eventsList->GetEvents()->empty()){
+				Requester^ requester = gcnew Requester();
+				requester->Get("http://my-calendar-server.herokuapp.com/events?token=" + user->GetToken());				
+				EventsCreator^ creator = gcnew EventsCreator();
+				eventsList->SetEvents(creator->CreateEvents(requester->getResponse()));
+			}
+							
+			Invalidate();
+			this->Text = (user->GetName() + "'s Calendar");
 		 }
 
 private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, System::EventArgs^  e) {
@@ -187,7 +207,7 @@ private: System::Void eventManagerCreateEvent_Click(System::Object^ sender, Syst
 					newEventDialog->Date, 
 					newEventDialog->DescriptionText
 				);
-				
+				sendDataToServer = true;				
 				eventsLoader->SaveEventsData(eventsList->ToArray());
 				
 				Invalidate();
@@ -244,6 +264,16 @@ private: System::Void MyForm_MouseClick(System::Object^  sender, System::Windows
 				 eventsList->CloseEvent(e->Location, currentDate);
 				 Invalidate();
 			 }
+		 }
+private: System::Void MyForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+			eventsLoader->SaveEventsData(eventsList->ToArray());
+			if (sendDataToServer) {
+				Requester^ resquester = gcnew Requester();
+				Cursor->Current = Cursors::WaitCursor;
+				label2->Text = "Sending data to server...";
+				label2->Invalidate();
+				resquester->postEvents("http://my-calendar-server.herokuapp.com/events", eventsList->ToJson(), user->GetToken());
+			}
 		 }
 };
 }

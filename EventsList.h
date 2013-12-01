@@ -32,6 +32,10 @@ namespace MyCalendar {
 			return this->events;
 		}
 
+		void SetEvents(list<Event^>^ eventsList){
+			this->events = eventsList; 
+		}
+
 		EventsList^ operator+=(Event^ event) {
 			events->push_back(event);
 			return this;
@@ -81,6 +85,16 @@ namespace MyCalendar {
 				}
 			}
 			return;
+		}
+
+		String^ ToJson(void) {
+			String^ jsonString = "[";
+			for each(Event^ event in this->GetEvents()) {
+				jsonString = jsonString + event->ToJson();
+				if (events->to_array()[events->size() - 1] != event) { jsonString = jsonString + ","; };
+			}
+			jsonString = jsonString + "]";
+			return jsonString;
 		}
 	};
 }

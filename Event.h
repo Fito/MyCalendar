@@ -34,6 +34,16 @@ namespace MyCalendar {
 			this->description = description;
 			this->text = gcnew EventText(Point(0, 0), this->title, this->description);
 		}
+		
+		Event(String^ title, String^ description, int dateDay, int dateMonth, int dateYear){
+			this->title = title;
+			this->date = CreateDate(dateDay, dateMonth, dateYear);
+			this->dateDay = dateDay;
+			this->dateMonth = dateMonth;
+			this->dateYear = dateYear;
+			this->description = description;
+			this->text = gcnew EventText(Point(0, 0), this->title, this->description);
+		}
 
 		bool IsOnDate(DateTime^ date) {
 			return (this->dateDay == date->Day &&
@@ -51,6 +61,10 @@ namespace MyCalendar {
 			this->text = gcnew EventText(Point(0, 0), this->title, this->description);
 		}
 
+		DateTime^ CreateDate(int dateDay, int dateMonth, int dateYear) {
+			return gcnew DateTime(dateYear, dateMonth, dateDay);
+		}
+
 		DateTime^ GetDate() {
 			return this->date;
 		}
@@ -65,6 +79,16 @@ namespace MyCalendar {
 
 		bool TextBorderContains(Point p) {
 			return this->text->border->Contains(p);
+		}
+
+		String^ ToJson(void) {
+			String^ jsonString = "{";
+			jsonString = jsonString + "\"title\":\"" + title + "\",";
+			jsonString = jsonString + "\"description\":\"" + description + "\",";
+			jsonString = jsonString + "\"day\":\"" + dateDay + "\",";
+			jsonString = jsonString + "\"month\":\"" + dateMonth + "\",";
+			jsonString = jsonString + "\"year\":\"" + dateYear + "\"}";
+			return jsonString;
 		}
 	};
 }

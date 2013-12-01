@@ -74,7 +74,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="EventsCreator.cpp" />
     <ClCompile Include="EventsLoader.cpp" />
+    <ClCompile Include="Json.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="NewEventDialog.cpp" />
     <ClCompile Include="Requester.cpp" />
@@ -89,6 +91,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -97,9 +100,11 @@
     <ClInclude Include="DataLoader.h" />
     <ClInclude Include="Elements.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="EventsCreator.h" />
     <ClInclude Include="EventsList.h" />
     <ClInclude Include="EventsLoader.h" />
     <ClInclude Include="EventText.h" />
+    <ClInclude Include="Json.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
